@@ -12,7 +12,7 @@
   "author": "Harry Gogonis <hgogonis@gmail.com>",
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/HarryGogonis/redux-routines-ts"
   },
   "license": "MIT",
   "engines": {
@@ -126,6 +126,7 @@
     "typescript": "^3.0.3"
   },
   "dependencies": {
+    "core-js": "^2.6.9",
     "deox": "^2.1.0"
   }
 }
