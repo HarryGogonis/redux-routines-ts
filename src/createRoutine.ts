@@ -29,13 +29,15 @@ import { createActionCreator, getType, Action } from 'deox'
  */
 export const createRoutine: RoutineCreator = <Payload, Params>(typePrefix: string) => {
   const trigger = createActionCreator(`${typePrefix}_TRIGGER`, resolve => (params: Params) =>
-    resolve(params)
+    resolve(undefined, params)
   )
-  const success = createActionCreator(`${typePrefix}_SUCCESS`, resolve => (payload: Payload) =>
-    resolve(payload)
+  const success = createActionCreator(
+    `${typePrefix}_SUCCESS`,
+    resolve => (payload: Payload, params: Params) => resolve(payload, params)
   )
-  const failure = createActionCreator(`${typePrefix}_FAILURE`, resolve => (error: Error) =>
-    resolve(error)
+  const failure = createActionCreator(
+    `${typePrefix}_FAILURE`,
+    resolve => (error: Error, params: Params) => resolve(error, params)
   )
   return {
     trigger,
@@ -47,9 +49,18 @@ export const createRoutine: RoutineCreator = <Payload, Params>(typePrefix: strin
 }
 
 export interface Routine<Payload, Params> {
-  trigger: (params: Params) => Action<string, Params>
-  success(payload: Payload): Action<string, Payload>
-  failure(error: Error): Action<string, Error>
+  trigger: ((params: Params) => Action<string, undefined, Params>) & {
+    type: string
+    toString(): string
+  }
+  success: ((payload: Payload, params: Params) => Action<string, Payload, Params>) & {
+    type: string
+    toString(): string
+  }
+  failure: ((error: Error, params: Params) => Action<string, Error, Params>) & {
+    type: string
+    toString(): string
+  }
   PREFIX: string
   TRIGGER: string
 }

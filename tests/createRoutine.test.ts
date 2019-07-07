@@ -1,4 +1,5 @@
 import { createRoutine, Routine } from "../src/createRoutine"
+import { createReducer, Immutable } from "deox";
 
 interface FooPayload {
     id: string;
@@ -22,27 +23,31 @@ describe("#createRoutine", () => {
         }
         expect(routine.trigger(params)).toEqual({
             type: 'FOO_TRIGGER',
-            payload: params
+            meta: params
         })
     })
 
     it("has a FOO_SUCCESS action", () => {
+        const params = { id: '5' }
         const payload: FooPayload = {
             id: '5',
             count: 0,
         }
-        expect(routine.success(payload)).toEqual({
+        expect(routine.success(payload, params)).toEqual({
             type: 'FOO_SUCCESS',
-            payload
+            payload,
+            meta: params
         })
     })
 
     it("has a FOO_FAILURE action", () => {
         const error = new Error('oops!')
-        expect(routine.failure(error)).toEqual({
+        const params = { id: '5' }
+        expect(routine.failure(error, params)).toEqual({
             type: 'FOO_FAILURE',
             payload: error,
             error: true,
+            meta: params
         })
     })
 
@@ -61,6 +66,22 @@ describe("#createRoutine", () => {
             expect(noParamsRoutine.trigger()).toEqual({
                 type: 'FOO_TRIGGER',
             })
+        })
+    })
+
+    describe('reducer', () => {
+        const foo: FooPayload = {
+            id: '5',
+            count: 0,
+        }
+        const initialState = {} as Immutable<FooPayload>;
+        it("supports createReducer", () => {
+            const reducer = createReducer(initialState, handleAction => [
+                handleAction(routine.success, (state, { payload, meta }) => { return { ...state, [meta.id]: payload } })
+            ])
+
+            const state = reducer(initialState, routine.success(foo, { id: '5' }))
+            expect(state).toEqual({ '5': { id: '5', count: 0 } })
         })
     })
 })
