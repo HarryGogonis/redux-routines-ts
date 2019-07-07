@@ -1,4 +1,4 @@
-import { createRoutine, Routine } from "./createRoutine"
+import { createRoutine, Routine } from "../src/createRoutine"
 
 interface FooPayload {
     id: string;
