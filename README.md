@@ -1,9 +1,10 @@
-# Redux-Routines-TS
+# Redux-Routines-Ts
 
 A helper for the REQUEST/SUCCESS/FAILURE action creator pattern found in Redux.
+
 Utilizes [deox](https://github.com/thebrodmann/deox) to provide strong TypeScript inferences.
 
-Helps reduce boilerplate when making asynchronous API calls in Sagas or Thunks
+Helps reduce boilerplate when making asynchronous API calls in Sagas or Thunks.
 
 ## [API Reference](https://harrygogonis.github.io/redux-routines-ts/)
 ## [Full Example](https://codesandbox.io/s/typescript-redux-routines-c7nde)

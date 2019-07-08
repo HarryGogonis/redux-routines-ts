@@ -77,7 +77,9 @@ describe("#createRoutine", () => {
         const initialState = {} as Immutable<FooPayload>;
         it("supports createReducer", () => {
             const reducer = createReducer(initialState, handleAction => [
-                handleAction(routine.success, (state, { payload, meta }) => { return { ...state, [meta.id]: payload } })
+                handleAction(routine.success, (state, { payload, meta }) => {
+                    return { ...state, [meta.id]: payload }
+                })
             ])
 
             const state = reducer(initialState, routine.success(foo, { id: '5' }))

@@ -4,14 +4,14 @@ import { createActionCreator, getType, Action } from 'deox'
  * Creates a set of life-cycle actions that are
  * useful for asynchronous actions like fetching data
  *
- * @param typePrefix    prefix for action type
- * @typeparam Payload   the data to be merged into state, usually a domain object from your API
- * @typeparam Params    the metadata required to start a routine, for example the ID of an object
- *
  * ```ts
  * const fetchFoo = createRoutine<Foo, { id: string }>('FETCH_FOO')
  * const fetchAll = createRoutine<Foo[]>('FETCH_ALL_FOO')
  * ```
+ *
+ * @param typePrefix    prefix for action type
+ * @typeparam Payload   the data to be merged into state, usually a domain object from your API
+ * @typeparam Params    the metadata required to start a routine, for example the ID of an object
  */
 export const createRoutine: RoutineCreator = <Payload, Params = void>(
   typePrefix: string
