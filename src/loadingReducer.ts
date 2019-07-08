@@ -1,7 +1,8 @@
 import { AnyAction } from 'redux'
 import { DeepImmutableObject } from 'deox'
 
-import { TRIGGER_POSTFIX, SUCCESS_POSTFIX, FAILURE_POSTFIX } from './constants'
+import { TRIGGER_POSTFIX } from './lib/constants'
+import { matchPostfix } from './lib/matchPostfix'
 
 /**
  * Listens to all actions on the store
@@ -21,18 +22,14 @@ import { TRIGGER_POSTFIX, SUCCESS_POSTFIX, FAILURE_POSTFIX } from './constants'
  */
 export function loadingReducer<T>(
     state: DeepImmutableObject<T> = {} as DeepImmutableObject<T>,
-    action: AnyAction
+    { type }: AnyAction
 ) {
-    const { type } = action
-    const re = new RegExp(
-        `(.*)_(${TRIGGER_POSTFIX}|${SUCCESS_POSTFIX}|${FAILURE_POSTFIX})`
-    )
-    const matches = re.exec(type)
+    const matches = matchPostfix(type)
 
     if (!matches) {
         return state
     }
-    const [, requestType, requestState] = matches
+    const [requestType, requestState] = matches
 
     return {
         ...state,
